@@ -1,0 +1,16 @@
+syntax = "proto3";
+package videostore;
+import "common/common.proto";
+option java_package = "ru.backendbyjava.proto";
+option java_multiple_files = true;
+
+message VideoStoreRequest {
+  common.VideoCategory category = 1;
+}
+message VideoStoreResponse {
+  common.Video video = 1;
+}
+service VideoStoreService {
+  // server streaming rpc call to receive a stream of videos
+  rpc getMovies(VideoStoreRequest) returns (stream VideoStoreResponse) {};
+}

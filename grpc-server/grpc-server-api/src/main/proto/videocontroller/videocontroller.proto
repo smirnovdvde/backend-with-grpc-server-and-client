@@ -1,0 +1,17 @@
+syntax = "proto3";
+package videocontroller;
+import "common/common.proto";
+option java_package = "ru.backendbyjava.proto";
+option java_multiple_files = true;
+
+message VideoRequest {
+  string userid = 1;
+  common.VideoCategory category = 2;
+}
+message VideoResponse {
+  common.Video video = 1;
+}
+service VideoControllerService {
+  // unary rpc call to retrieve a video
+  rpc getVideo(VideoRequest) returns (VideoResponse) {};
+}

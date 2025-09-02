@@ -1,0 +1,16 @@
+syntax = "proto3";
+package userpreferences;
+import "common/common.proto";
+option java_package = "ru.backendbyjava.proto";
+option java_multiple_files = true;
+
+message UserPreferencesRequest {
+  string userid = 1;
+}
+message UserPreferencesResponse {
+  common.Video video = 1;
+}
+service UserPreferencesService {
+  // Bidirectional streaming rpc call to receive a stream of videos shortlisted based on user preferences
+  rpc getShortlistedVideos(stream UserPreferencesRequest) returns (stream UserPreferencesResponse) {};
+}
