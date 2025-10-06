@@ -1,0 +1,21 @@
+syntax = "proto3";
+package common;
+option java_package = "ru.backendbyjava.proto";
+option java_multiple_files = true;
+
+enum VideoCategory {
+  FILM_AND_ANIMATION = 0;
+  AUTOS_AND_VEHICLES = 1;
+  MUSIC = 2;
+  PETS_AND_ANIMALS = 3;
+  SPORTS = 4;
+  TRAVELS_AND_EVENTS = 5;
+  GAMING = 6;
+  PEOPLE_AND_BLOGS = 7;
+}
+message Video {
+  string title = 1;
+  int32 rating = 2;
+  VideoCategory category = 3;
+  string description = 4;
+}

@@ -1,0 +1,129 @@
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    ext {
+        projectVersion = '3.0.0-SNAPSHOT'
+
+        // https://github.com/grpc/grpc-java/releases
+        grpcVersion = '1.73.0'
+
+        // https://github.com/protocolbuffers/protobuf/releases
+        protobufVersion = '4.31.0'
+        protobufGradlePluginVersion = '0.9.4'
+
+        // https://github.com/spring-projects/spring-boot/releases
+        springBootVersion = '3.4.1'
+        springBootGrpcVersion = '2.15.0.RELEASE'
+
+        // https://github.com/JetBrains/kotlin/releases
+        kotlinVersion = "1.8.22"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version '1.1.3'
+    id 'com.google.protobuf' version "${protobufGradlePluginVersion}"
+}
+
+
+wrapper {
+    // Update using:
+    // ./gradlew wrapper --gradle-version=8.4 --distribution-type=bin
+    gradleVersion = '8.4'
+}
+
+def buildTimeAndDate = OffsetDateTime.now()
+
+//ext {
+//    buildDate = DateTimeFormatter.ISO_LOCAL_DATE.format(buildTimeAndDate)
+//    buildTime = DateTimeFormatter.ofPattern('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+//    buildRevision = versioning.info.commit
+//}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+        options.encoding = 'UTF-8'
+    }
+
+    compileJava.options*.compilerArgs = [
+            '-Xlint:all', '-Xlint:-processing', '-parameters'
+    ]
+
+    normalization {
+        runtimeClasspath {
+            metaInf{
+                ignoreAttribute('Build-Time')
+            }
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    buildscript {
+        repositories {
+            maven { url 'https://plugins.gradle.org/m2/' }
+        }
+    }
+}
+
+
+allprojects { project ->
+    buildscript {
+        dependencyManagement {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+                mavenBom "com.google.protobuf:protobuf-bom:${protobufVersion}"
+                mavenBom "io.grpc:grpc-bom:${grpcVersion}"
+                mavenBom "org.junit:junit-bom:5.10.0"
+                mavenBom "org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"
+            }
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+        testLogging {
+            // failFast = true
+            // showStandardStreams = true
+            exceptionFormat = 'full'
+            showCauses = true
+            showExceptions = true
+            showStackTraces = true
+            // prints out individual test progress by hooking into junit engine events
+            // it.events('passed', 'skipped', 'failed', 'standard_out')
+            it.events('passed', 'skipped', 'failed')
+
+            it.debug { dbg ->
+                // prints out individual test progress when run under the debugger
+                // dbg.events('started', 'failed', 'passed', 'skipped', 'standard_error', 'standard_out')
+                dbg.events('started', 'failed', 'passed', 'skipped')
+            }
+        }
+    }
+}
+
+group = 'ru.backendbyjava'
+version = projectVersion
+

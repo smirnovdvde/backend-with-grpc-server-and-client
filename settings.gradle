@@ -1,0 +1,6 @@
+rootProject.name = 'backend-with-grpc-server-client'
+include 'grpc-server'
+include 'grpc-server:grpc-server-api'
+include 'grpc-server:grpc-server-impl'
+include 'grpc-client'
+

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: backend-with-grpc-server
+
+grpc:
+  server:
+    port: 9000
+    security:
+      enabled: false
