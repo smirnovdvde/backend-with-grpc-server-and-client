@@ -1,4 +1,4 @@
-package java.ru.backendbyjava.grpc.client.service;
+package ru.backendbyjava.grpc.client.service;
 
 import io.grpc.*;
 import org.slf4j.Logger;

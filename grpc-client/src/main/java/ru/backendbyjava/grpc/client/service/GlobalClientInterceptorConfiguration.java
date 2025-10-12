@@ -1,4 +1,4 @@
-package java.ru.backendbyjava.grpc.client.service;
+package ru.backendbyjava.grpc.client.service;
 
 import net.devh.boot.grpc.client.interceptor.GrpcGlobalClientInterceptor;
 import org.springframework.context.annotation.Configuration;

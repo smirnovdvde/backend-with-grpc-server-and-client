@@ -1,10 +1,9 @@
-package java.ru.backendbyjava;
+package ru.backendbyjava;
 
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.ru.backendbyjava.grpc.client.service.GrpcClientService;
+import ru.backendbyjava.grpc.client.service.GrpcClientService;
 
 @Component
 public class ApplicationRunnerImpl implements ApplicationRunner {
